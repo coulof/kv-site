@@ -1,9 +1,4 @@
-@font-face{font-family:"SUSE";src:url(fonts/suse-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"SUSE";src:url(fonts/suse-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"SUSE";src:url(fonts/suse-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"SUSE";src:url(fonts/suse-latin-800-normal.woff2) format("woff2");font-weight:800;font-display:swap}
-@font-face{font-family:"SUSE Mono";src:url(fonts/suse-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"SUSE Mono";src:url(fonts/suse-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
+@import url("https://fonts.googleapis.com/css2?family=SUSE+Mono:wght@100..800&family=SUSE:wght@100..800&display=swap");
 
 /* Palette and stroke weight come straight from the logos:
    cobalt #2453FF strokes and fills, #FE7C3F for the one highlighted thing
@@ -66,9 +61,9 @@ h1{font-weight:800;font-size:clamp(36px,5.2vw,60px);line-height:1.04;margin:0 0 
 .ask{margin:56px 0 0;position:relative;padding-left:40px}
 .ask::before{content:"";position:absolute;left:9px;top:8px;bottom:34px;width:var(--stroke);background:var(--blue);border-radius:2px}
 .ask-row{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) 140px minmax(0,1fr);gap:24px;padding:18px 20px;margin-bottom:12px;border:var(--stroke) solid var(--blue);border-radius:var(--radius);align-items:baseline;text-decoration:none;color:inherit}
-.ask-row::before{content:"";position:absolute;left:-31px;top:50%;width:31px;height:var(--stroke);background:var(--blue)}
-.ask-row::after{content:"";position:absolute;left:-38px;top:calc(50% - 7px);width:13px;height:13px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 2px #fff}
-.ask-row:hover{background:var(--blue-wash)}
+.ask-row::before{content:"";position:absolute;left:-31px;top:calc(50% - var(--stroke) / 2);width:31px;height:var(--stroke);background:var(--blue)}
+.ask-row::after{content:"";position:absolute;left:-38px;top:calc(50% - 6.5px);width:13px;height:13px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 2px #fff}
+.ask-row:hover{background:var(--blue-wash);border-color:var(--orange)}
 .ask-row:hover::after{background:var(--orange)}
 .ask-row:hover::before{background:var(--orange)}
 .ask-row .q{font:700 19px/1.35 var(--display);color:var(--ink)}
@@ -88,11 +83,11 @@ h3{font-weight:700;font-size:21px;margin:40px 0 12px}
 @media (max-width:900px){.cols{grid-template-columns:minmax(0,1fr);gap:24px}}
 
 /* screenshots sit on the orange square from the KVTools mark */
-figure{margin:44px 0 36px 18px;position:relative;isolation:isolate}
-figure::before{content:"";position:absolute;inset:0;transform:translate(-18px,-18px);background:var(--orange);border-radius:var(--radius);z-index:-1}
-figure img{border-radius:var(--radius);background:#1c1e26}
+figure{margin:44px 0 36px 18px}
+figure>img,figure>video{box-shadow:-18px -18px 0 var(--orange)}
+figure img,figure video{display:block;width:100%;height:auto;border-radius:var(--radius);background:#1c1e26}
 figcaption{font-size:14px;color:var(--ink-2);margin-top:12px}
-@media (max-width:760px){figure{margin-left:10px}figure::before{transform:translate(-10px,-10px)}}
+@media (max-width:760px){figure{margin-left:10px}figure>img,figure>video{box-shadow:-10px -10px 0 var(--orange)}}
 
 /* bullets are the router blocks from the kvovn-topo mark */
 ul.facts{list-style:none;padding:0;margin:0}

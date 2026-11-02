@@ -5,24 +5,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KVTools, KVTop, KVOvn-topo | Open-source tools for KubeVirt operators</title>
 <meta name="description" content="Open-source CLI tools for VMs on KubeVirt: inventory export to Excel, a btop-style VM monitor, and an OVN topology explorer. Harvester, OpenShift.">
-<!-- TODO: replace SITE.example with the real domain before deploy -->
-<link rel="canonical" href="https://SITE.example/">
+<link rel="canonical" href="https://kvtools.lafabrique.ai/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Open-source tools for KubeVirt operators">
 <meta property="og:description" content="Inventory, live VM metrics and OVN topology for Harvester, OpenShift Virtualization and upstream KubeVirt. Read-only, single binaries, MIT.">
-<meta property="og:url" content="https://SITE.example/">
-<meta property="og:image" content="https://SITE.example/img/og-home.png">
+<meta property="og:url" content="https://kvtools.lafabrique.ai/">
+<meta property="og:image" content="https://kvtools.lafabrique.ai/img/og-home.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/kvtools-mark.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/suse-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SUSE+Mono:wght@100..800&family=SUSE:wght@100..800&display=swap">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@graph":[
-    {"@type":"SoftwareApplication","name":"KVTools","url":"https://SITE.example/#kvtools","codeRepository":"https://github.com/coulof/kvtools","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","license":"https://opensource.org/licenses/MIT","description":"RVTools-style inventory and health audit for KubeVirt clusters. Exports to Excel, JSON, CSV.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
-    {"@type":"SoftwareApplication","name":"KVTop","url":"https://SITE.example/#kvtop","codeRepository":"https://github.com/coulof/kvtop","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","softwareVersion":"0.2.0","description":"btop-style terminal monitor and MCP server for virtual machines on KubeVirt and Harvester.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
-    {"@type":"SoftwareApplication","name":"KVOvn-topo","url":"https://SITE.example/#kvovn-topo","codeRepository":"https://github.com/coulof/kvovn-topo","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","softwareVersion":"0.1.0","description":"Read-only network topology explorer for OVN on Kube-OVN and ovn-kubernetes.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"SoftwareApplication","name":"KVTools","url":"https://kvtools.lafabrique.ai/#kvtools","codeRepository":"https://github.com/coulof/kvtools","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","license":"https://opensource.org/licenses/MIT","description":"RVTools-style inventory and health audit for KubeVirt clusters. Exports to Excel, JSON, CSV.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"SoftwareApplication","name":"KVTop","url":"https://kvtools.lafabrique.ai/#kvtop","codeRepository":"https://github.com/coulof/kvtop","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","softwareVersion":"0.2.0","description":"btop-style terminal monitor and MCP server for virtual machines on KubeVirt and Harvester.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"SoftwareApplication","name":"KVOvn-topo","url":"https://kvtools.lafabrique.ai/#kvovn-topo","codeRepository":"https://github.com/coulof/kvovn-topo","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","softwareVersion":"0.1.0","description":"Read-only network topology explorer for OVN on Kube-OVN and ovn-kubernetes.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
     {"@type":"Person","@id":"#author","name":"Florian Coulombel","url":"https://github.com/coulof"}
   ]
 }
@@ -43,7 +44,7 @@
       <a href="#kvtop">KVTop</a>
       <a href="#kvovn-topo">KVOvn-topo</a>
       <a href="rvtools-alternative-kubevirt/">Coming from RVTools</a>
-      <a href="https://lafabrique.ai">Blog</a>
+      <a href="https://lafabrique.ai/blog/">Blog</a>
     </nav>
   </div>
 </header>
@@ -56,13 +57,13 @@
     <div>
     <p class="kicker">Harvester · SUSE Virtualization · OpenShift Virtualization · KubeVirt</p>
     <h1>Day-2 tools for people who run VMs on Kubernetes.</h1>
-    <p class="lede">A week after a VMware exit, someone asks for the RVTools export. On KubeVirt there isn't one, and there's no esxtop or vSphere network view either. I wrote three read-only command-line tools to cover those gaps: inventory, live load per VM, and the OVN network map.</p>
+    <p class="lede">A week after a VMware exit, someone asks for the RVTools export. On KubeVirt there isn't one, and there's no esxtop or vSphere network view either. Here are three read-only command-line tools for it: an inventory, live load per VM and the OVN network map. KVTop and KVOvn-topo also run as MCP servers, so your favorite agent can use them.</p>
     </div>
     <div class="hero-art" aria-hidden="true">
       <svg viewBox="0 0 600 200" preserveAspectRatio="xMinYMid meet">
         <path d="M49.81,46.19 L89.19,27.21 Q100,22 110.81,27.21 L150.19,46.19 Q161,51.4 163.66,63.10 L173.34,105.70 Q176,117.4 168.52,126.78 L141.28,160.92 Q133.8,170.3 121.8,170.3 L78.2,170.3 Q66.2,170.3 58.72,160.92 L31.48,126.78 Q24,117.4 26.66,105.70 L36.34,63.10 Q39,51.4 49.81,46.19 Z" fill="none" stroke="#2453FF" stroke-width="5" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px"/>
-        <polyline fill="none" stroke="#FE7C3F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px"
-          points="-40,112 0,108 12,104 22,114 32,100 42,107 52,93 62,103 72,96 82,107 92,93 102,100 112,89 122,103 132,96 142,86 150,69 158,93 168,107 178,96 188,110 198,100 210,108 230,98 250,110 270,96 290,104 310,88 322,100 334,72 346,104 360,96 380,108 400,92 420,104 440,100 460,110 480,94 500,104 520,98 540,108 560,90 600,100 700,96"/>
+        <path fill="none" stroke="#FE7C3F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px"
+          d="M-40,112 C-33.3,111.3 -8.7,109.3 0,108 C8.7,106.7 8.3,103.0 12,104 C15.7,105.0 18.7,114.7 22,114 C25.3,113.3 28.7,101.2 32,100 C35.3,98.8 38.7,108.2 42,107 C45.3,105.8 48.7,93.7 52,93 C55.3,92.3 58.7,102.5 62,103 C65.3,103.5 68.7,95.3 72,96 C75.3,96.7 78.7,107.5 82,107 C85.3,106.5 88.7,94.2 92,93 C95.3,91.8 98.7,100.7 102,100 C105.3,99.3 108.7,88.5 112,89 C115.3,89.5 118.7,101.8 122,103 C125.3,104.2 128.7,98.8 132,96 C135.3,93.2 139.0,90.5 142,86 C145.0,81.5 147.3,67.8 150,69 C152.7,70.2 155.0,86.7 158,93 C161.0,99.3 164.7,106.5 168,107 C171.3,107.5 174.7,95.5 178,96 C181.3,96.5 184.7,109.3 188,110 C191.3,110.7 194.3,100.3 198,100 C201.7,99.7 204.7,108.3 210,108 C215.3,107.7 223.3,97.7 230,98 C236.7,98.3 243.3,110.3 250,110 C256.7,109.7 263.3,97.0 270,96 C276.7,95.0 283.3,105.3 290,104 C296.7,102.7 304.7,88.7 310,88 C315.3,87.3 318.0,102.7 322,100 C326.0,97.3 330.0,71.3 334,72 C338.0,72.7 341.7,100.0 346,104 C350.3,108.0 354.3,95.3 360,96 C365.7,96.7 373.3,108.7 380,108 C386.7,107.3 393.3,92.7 400,92 C406.7,91.3 413.3,102.7 420,104 C426.7,105.3 433.3,99.0 440,100 C446.7,101.0 453.3,111.0 460,110 C466.7,109.0 473.3,95.0 480,94 C486.7,93.0 493.3,103.3 500,104 C506.7,104.7 513.3,97.3 520,98 C526.7,98.7 533.3,109.3 540,108 C546.7,106.7 550.0,91.3 560,90 C570.0,88.7 576.7,99.0 600,100 C623.3,101.0 683.3,96.7 700,96"/>
         <circle cx="150" cy="69" r="6" fill="#FE7C3F" stroke="#fff" stroke-width="2"/>
       </svg>
     </div>
@@ -121,8 +122,12 @@
     </div>
 
     <figure>
-      <img src="img/kvtools-excel.webp" width="1600" height="384" loading="lazy" alt="KVTools Excel export open on the kvNode sheet, one row per physical host">
-      <figcaption>The <code>kvNode</code> sheet: physical cores, allocatable resources, allocated vCPU and RAM, and the overcommit ratio per host.</figcaption>
+      <img src="img/kvtools-kvinfo.webp" width="1600" height="411" loading="lazy" alt="KVTools export open on the kvInfo sheet, one row per VM with power state, host, IP address and guest OS">
+      <figcaption>The <code>kvInfo</code> sheet: one row per VM, with host, IP address, guest OS and firmware.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/kvtools-health.webp" width="1600" height="247" loading="lazy" alt="Terminal output of kvtools health: a table of findings HLTH-009 and HLTH-012 with severity, category, resource, issue summary and remediation">
+      <figcaption><code>kvtools health</code> prints each finding with its rule ID, severity, resource and remediation.</figcaption>
     </figure>
     <p><a href="rvtools-alternative-kubevirt/">Tab-by-tab mapping from RVTools to KVTools →</a></p>
   </section>
@@ -133,7 +138,10 @@
     <p class="tag">Live VM monitor and MCP server · <a href="https://github.com/coulof/kvtop">coulof/kvtop</a> · v0.2.0 · MIT</p>
 
     <figure style="margin-top:0">
-      <img src="img/kvtop-dashboard.webp" width="1600" height="691" loading="lazy" alt="KVTop terminal dashboard with braille charts for VM CPU, memory and network, a node table and a VM table">
+      <video autoplay muted loop playsinline preload="none" poster="img/kvtop-dashboard.webp" width="1400" height="900" aria-label="KVTop terminal dashboard with braille charts for VM CPU, memory and network, a node table and a VM table">
+        <source src="img/kvtop.webm" type="video/webm">
+        <img src="img/kvtop-dashboard.webp" width="1600" height="691" loading="lazy" alt="KVTop terminal dashboard with braille charts for VM CPU, memory and network, a node table and a VM table">
+      </video>
     </figure>
 
     <div class="cols">
@@ -164,7 +172,7 @@
       <div class="prose">
         <p><code>kubectl ko nbctl show</code> gives you every row and no picture. KVOvn-topo reads the Northbound and Southbound databases, joins them, and shows the result as a k9s-style tree: VPC, router, switch, port, and the pod or VM behind it. Press <kbd>Enter</kbd> on a relation to follow it.</p>
         <p>With <code>--diag</code> it runs <code>ovn-trace</code>, tcpdump or conntrack for the selected object, on the node that hosts it. Without it, nothing is executed anywhere.</p>
-        <p>It supports Kube-OVN on RKE2 and Harvester. On OpenShift it reads ovn-kubernetes one node at a time. If you want the long version, read <a href="https://lafabrique.ai">Following a Packet Through OVN</a>.</p>
+        <p>It supports Kube-OVN on RKE2 and Harvester. On OpenShift it reads ovn-kubernetes one node at a time. If you want the long version, read <a href="https://lafabrique.ai/blog/">Following a Packet Through OVN</a><!-- [TODO: link the post URL directly, only the blog index is known] -->.</p>
       </div>
       <div>
         <ul class="facts">
@@ -181,7 +189,11 @@
       </div>
     </div>
     <figure>
-      <img src="img/kvovn-topo-home.webp" width="1600" height="809" loading="lazy" alt="KVOvn-topo terminal UI with the VPC tree on the left and the details pane on the right">
+      <video autoplay muted loop playsinline preload="none" poster="img/kvovn-topo-home.webp" width="1400" height="820" aria-label="KVOvn-topo terminal UI with the VPC tree on the left and the details pane on the right">
+        <source src="img/kvovn-topo.webm" type="video/webm">
+        <img src="img/kvovn-topo-home.webp" width="1600" height="809" loading="lazy" alt="KVOvn-topo terminal UI with the VPC tree on the left and the details pane on the right">
+      </video>
+      <figcaption>Recorded from the repo's test fixtures with vhs.</figcaption>
     </figure>
   </section>
 

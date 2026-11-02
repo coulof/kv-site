@@ -11,21 +11,19 @@ public/                      everything that gets deployed
   index.html                 home: the three tools
   rvtools-alternative-kubevirt/index.html   landing page for "RVTools for KubeVirt" searches
   404.html                   uses absolute /style.css (served at any depth)
-  style.css                  the whole design system, one file
-  fonts/                     SUSE and SUSE Mono, latin subset, self-hosted (no Google Fonts call)
-  img/                       logo marks (SVG), screenshots (WebP), og-*.png
+  style.css                  the whole design system, one file (SUSE & SUSE Mono via Google Fonts CDN)
+  img/                       logo marks (SVG), screenshots (WebP), vhs demos (WebM), og-*.png
   robots.txt  sitemap.xml  llms.txt
 scripts/
   check.mjs                  renders every sitemap page at 390px and 1366px, fails on overflow,
                              missing SEO tags, or broken internal links/assets; screenshots in .shots/
-  og.mjs + og.html           regenerates the 1200x630 Open Graph images
+  server.mjs                 static server used by check (mirrors Workers trailing-slash rules)
   optimize-image.py          README screenshot -> cropped 1600px WebP
-  server.mjs                 static server used by the scripts (mirrors Workers trailing-slash rules)
 wrangler.jsonc               assets-only Worker, html_handling auto-trailing-slash
 ```
 
-Commands: `npm i`, `npx playwright install chromium` (once), `npm run dev`, `npm run check`,
-`npm run og`, `npm run deploy` (runs check first).
+Commands (`mise tasks` lists them): `mise run setup` (npm i + Playwright Chromium, once), `mise run check`, `mise run serve`, `mise run deploy` (runs check first),
+`mise run cf:login`. The npm scripts still work.
 
 ## Source of truth for facts
 
@@ -72,7 +70,7 @@ no-ai-slop skill to every copy change. In particular:
 - Colours: cobalt `#2453FF` (headings, outlines, the full-width band), deep `#1638C9` (hover,
   code text), wash `#EEF2FF`, ink `#0F1633`, ink-2 `#4B5373`, orange `#FE7C3F`.
 - **Orange is never text.** It marks the one highlighted thing: the KVTop spike, the hovered tree
-  node, the square behind a screenshot. Orange on white is 2.6:1 and fails contrast.
+  node (row outline, connector and dot), the square behind a screenshot. Orange on white is 2.6:1 and fails contrast.
 - Stroke `2.5px`, radius `12px`, round joins: the logos' outline weight. Use outlines before fills.
 - Motifs, use sparingly: the seven-sided outline (hero, band), the tree with nodes (the three
   questions), the offset orange square (screenshots), the small blue block (bullets).
@@ -90,8 +88,8 @@ Q&A). `<img>` always has `width`, `height`, `alt`, and `loading="lazy"` below th
 When you add a page:
 1. Create `public/<slug>/index.html` (copy the header/footer from an existing page, links relative).
 2. Add it to `sitemap.xml` and `llms.txt`.
-3. Add an entry in `scripts/og.mjs`, run `npm run og`.
-4. Run `npm run check`. It must pass, and look at `.shots/*-mobile.png` yourself.
+3. Add its own 1200x630 `public/img/og-<slug>.png` (made by hand, no generator script).
+4. Run `mise run check`. It must pass, and look at `.shots/*-mobile.png` yourself.
 
 Pages target one search intent each. Planned, in order:
 1. `/kubevirt-vm-monitoring-without-prometheus/`: KVTop.
@@ -102,7 +100,7 @@ Pages target one search intent each. Planned, in order:
 ## Before the first deploy
 
 - Replace every `SITE.example` (HTML, robots.txt, sitemap.xml, llms.txt) with the real domain.
-- Point the blog links at the real post URL on lafabrique.ai.
+- Blog links point at https://lafabrique.ai/blog/. Point "Following a Packet Through OVN" at the post URL itself.
 - Resolve the footer `CONFIRM` comment (personal projects vs SUSE).
 - Push the homebrew-tap branch, or the `brew install` lines on the site are wrong.
 - Add a LICENSE to kvovn-topo.

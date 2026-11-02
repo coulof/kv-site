@@ -1,0 +1,45 @@
+[tools]
+node = "lts"
+
+[tasks.setup]
+description = "Install npm dependencies and the Playwright Chromium"
+run = [
+  "npm install",
+  "npx playwright install chromium",
+]
+
+[tasks.serve]
+description = "Start the local Workers dev server"
+depends = ["setup"]
+run = "npx wrangler dev"
+
+[tasks.check]
+description = "Render every sitemap page at 390px and 1366px, fail on overflow, SEO or link problems"
+depends = ["setup"]
+run = "npm run check"
+
+[tasks.clean]
+description = "Remove screenshots and wrangler cache"
+run = "rm -rf .shots/ .wrangler/"
+
+[tasks."cf:login"]
+description = "Login to Cloudflare"
+run = "npx wrangler login"
+
+[tasks."cf:whoami"]
+description = "Show the Cloudflare account wrangler is logged in to"
+run = "npx wrangler whoami"
+
+[tasks."cf:dry-run"]
+description = "Show what wrangler deploy would publish, without uploading"
+depends = ["check"]
+run = "npx wrangler deploy --dry-run"
+
+[tasks."cf:tail"]
+description = "Stream logs from the deployed Worker"
+run = "npx wrangler tail"
+
+[tasks.deploy]
+description = "Run checks, then deploy to Cloudflare Workers"
+depends = ["check"]
+run = "npx wrangler deploy"
