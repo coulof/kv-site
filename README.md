@@ -11,3 +11,5 @@ mise run deploy   # check, then wrangler deploy
 ```
 
 Read [AGENTS.md](AGENTS.md) before changing copy or styles.
+
+MIT licensed, see [LICENSE](LICENSE).
