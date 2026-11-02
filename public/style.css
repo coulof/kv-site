@@ -1,0 +1,141 @@
+@font-face{font-family:"SUSE";src:url(fonts/suse-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUSE";src:url(fonts/suse-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"SUSE";src:url(fonts/suse-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"SUSE";src:url(fonts/suse-latin-800-normal.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"SUSE Mono";src:url(fonts/suse-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"SUSE Mono";src:url(fonts/suse-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
+
+/* Palette and stroke weight come straight from the logos:
+   cobalt #2453FF strokes and fills, #FE7C3F for the one highlighted thing
+   (the spike, the traced path, the square behind). Orange is never text. */
+:root{
+  --blue:#2453ff;
+  --blue-deep:#1638c9;
+  --blue-wash:#eef2ff;
+  --orange:#fe7c3f;
+  --ink:#0f1633;
+  --ink-2:#4b5373;
+  --rule:#dfe3f0;
+  --bg:#fff;
+  --stroke:2.5px;
+  --radius:12px;
+  --display:"SUSE",system-ui,sans-serif;
+  --sans:"SUSE",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"SUSE Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --measure:66ch;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--blue);text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--blue-deep)}
+code,kbd,pre{font-family:var(--mono);font-size:.88em}
+:not(pre)>code,kbd{background:var(--blue-wash);color:var(--blue-deep);padding:.1em .35em;border-radius:4px}
+
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+.prose{max-width:var(--measure)}
+h1,h2,h3{font-family:var(--display);color:var(--blue);letter-spacing:-.01em}
+
+/* header */
+.top{border-bottom:var(--stroke) solid var(--blue)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.brand{display:flex;align-items:center;gap:4px;text-decoration:none;flex:none}
+.brand img{width:26px;height:26px}
+.brand span{font:800 20px var(--display);color:var(--blue);margin-left:8px}
+.top nav{display:flex;gap:22px;font-size:15px;overflow-x:auto;white-space:nowrap;padding:4px 0}
+.top nav a{color:var(--ink);text-decoration:none;font-weight:600}
+.top nav a:hover{color:var(--blue);text-decoration:underline}
+
+/* hero: the heptagon from the marks, with the KVTop trace breaking out of it */
+.hero{position:relative;padding:80px 0 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center}
+.hero-art{position:relative;height:360px}
+.hero-art svg{position:absolute;left:0;top:0;height:100%;width:calc(100% + 50vw - 570px + 24px);min-width:100%;overflow:visible}
+.kicker{font:500 13px var(--mono);letter-spacing:.03em;color:var(--ink-2);margin:0 0 18px}
+h1{font-weight:800;font-size:clamp(36px,5.2vw,60px);line-height:1.04;margin:0 0 22px}
+.lede{font-size:20px;line-height:1.5;color:var(--ink-2);max-width:56ch;margin:0}
+@media (max-width:860px){
+  .hero{padding-top:40px}
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-art{order:-1;height:150px;margin-bottom:8px}
+  .hero-art svg{width:calc(100% + 24px)}
+}
+
+/* three questions, drawn as the kvovn-topo tree: a trunk and one node per row */
+.ask{margin:56px 0 0;position:relative;padding-left:40px}
+.ask::before{content:"";position:absolute;left:9px;top:8px;bottom:34px;width:var(--stroke);background:var(--blue);border-radius:2px}
+.ask-row{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) 140px minmax(0,1fr);gap:24px;padding:18px 20px;margin-bottom:12px;border:var(--stroke) solid var(--blue);border-radius:var(--radius);align-items:baseline;text-decoration:none;color:inherit}
+.ask-row::before{content:"";position:absolute;left:-31px;top:50%;width:31px;height:var(--stroke);background:var(--blue)}
+.ask-row::after{content:"";position:absolute;left:-38px;top:calc(50% - 7px);width:13px;height:13px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 2px #fff}
+.ask-row:hover{background:var(--blue-wash)}
+.ask-row:hover::after{background:var(--orange)}
+.ask-row:hover::before{background:var(--orange)}
+.ask-row .q{font:700 19px/1.35 var(--display);color:var(--ink)}
+.ask-row .t{font:800 18px var(--display);color:var(--blue)}
+.ask-row .a{color:var(--ink-2);font-size:15.5px}
+@media (max-width:760px){.ask{padding-left:30px}.ask::before{left:5px}.ask-row{grid-template-columns:minmax(0,1fr);gap:4px}.ask-row::before{left:-25px;width:25px}.ask-row::after{left:-32px}}
+
+/* tool sections */
+section.tool{padding:72px 0 16px;margin-top:40px}
+.tool-head{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.tool-head img{width:64px;height:64px}
+h2{font-weight:800;font-size:clamp(32px,4vw,46px);line-height:1.08;margin:0}
+h3{font-weight:700;font-size:21px;margin:40px 0 12px}
+.tag{font:400 14px var(--mono);color:var(--ink-2);margin:0 0 32px}
+.tag a{color:var(--ink-2)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+@media (max-width:900px){.cols{grid-template-columns:minmax(0,1fr);gap:24px}}
+
+/* screenshots sit on the orange square from the KVTools mark */
+figure{margin:44px 0 36px 18px;position:relative;isolation:isolate}
+figure::before{content:"";position:absolute;inset:0;transform:translate(-18px,-18px);background:var(--orange);border-radius:var(--radius);z-index:-1}
+figure img{border-radius:var(--radius);background:#1c1e26}
+figcaption{font-size:14px;color:var(--ink-2);margin-top:12px}
+@media (max-width:760px){figure{margin-left:10px}figure::before{transform:translate(-10px,-10px)}}
+
+/* bullets are the router blocks from the kvovn-topo mark */
+ul.facts{list-style:none;padding:0;margin:0}
+ul.facts li{padding:11px 0 11px 26px;border-bottom:1px solid var(--rule);position:relative}
+ul.facts li::before{content:"";position:absolute;left:0;top:19px;width:14px;height:10px;border-radius:3px;background:var(--blue)}
+ul.facts b{font-weight:600;font-family:var(--mono);font-size:.92em;color:var(--blue-deep)}
+
+/* commands: outlined like the marks, not a fake terminal */
+.cmd{position:relative;background:#fff;border:var(--stroke) solid var(--blue);border-radius:var(--radius);padding:16px 20px;margin:20px 0;overflow-x:auto}
+.cmd pre{margin:0;font-size:14px;line-height:1.7;white-space:pre;color:var(--ink)}
+.cmd .c{color:var(--ink-2)}
+.cmd .p{color:var(--blue);font-weight:500;user-select:none}
+.copy{position:absolute;top:10px;right:10px;font:600 12px var(--mono);background:var(--blue);color:#fff;border:0;border-radius:6px;padding:7px 11px;cursor:pointer;min-height:32px}
+.copy:hover{background:var(--blue-deep)}
+
+.sheets{font:400 14px/1.95 var(--mono);columns:2;column-gap:24px;margin:0;padding:0;list-style:none;color:var(--blue-deep)}
+
+/* principles: the one full blue band */
+.band{background:var(--blue);color:#fff;margin-top:110px;padding:72px 0 64px;position:relative;overflow:hidden}
+.band h2{color:#fff}
+.band .hept{position:absolute;right:-90px;top:-70px;width:380px;height:380px;opacity:.18}
+.principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 40px;margin-top:32px;position:relative}
+.principles div{padding:16px 0;border-top:var(--stroke) solid rgba(255,255,255,.45)}
+.principles b{display:block;font:700 18px var(--display)}
+.principles p{margin:6px 0 0;color:#e3e9ff;font-size:15.5px}
+.principles code{background:rgba(255,255,255,.16);color:#fff}
+@media (max-width:900px){.principles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.principles{grid-template-columns:minmax(0,1fr)}}
+
+/* mapping table */
+table.map{width:100%;border-collapse:collapse;font-size:15.5px;margin:24px 0}
+table.map th,table.map td{text-align:left;padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+table.map th{font:700 14px var(--display);color:var(--blue);border-bottom:var(--stroke) solid var(--blue)}
+table.map td:first-child,table.map td:nth-child(2){font-family:var(--mono);font-size:14px;white-space:nowrap}
+table.map td:nth-child(2){color:var(--blue-deep);font-weight:500}
+table.map tr:hover td{background:var(--blue-wash)}
+.scroll{overflow-x:auto}
+
+.note{border:var(--stroke) solid var(--orange);border-radius:var(--radius);padding:14px 18px;color:var(--ink);margin:24px 0}
+
+footer{border-top:var(--stroke) solid var(--blue);padding:32px 0 48px;font-size:14.5px;color:var(--ink-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:var(--ink-2)}
+main+footer{margin-top:96px}
+.band+footer{margin-top:0}
+@media (max-width:600px){.brand img{display:none}.brand span{margin-left:0}.top nav{gap:16px}}

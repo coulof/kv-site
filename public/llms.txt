@@ -1,0 +1,8 @@
+# KV* tools
+
+> Open-source, read-only command-line tools for operating virtual machines on KubeVirt (Harvester / SUSE Virtualization, OpenShift Virtualization, upstream KubeVirt). Written by Florian Coulombel.
+
+- [KVTools](https://github.com/coulof/kvtools): RVTools-style inventory and health audit for KubeVirt. Exports to Excel (13 sheets: kvInfo, kvCPU, kvMemory, kvDisk, kvPartition, kvNetwork, kvCD, kvSnapshot, kvGuestAgent, kvNode, kvStoragePool, kvHardware, kvHealth), JSON or CSV. MIT.
+- [KVTop](https://github.com/coulof/kvtop): btop-style terminal monitor for KubeVirt VMs (CPU, memory, network, IOPS per VM), JSON CLI and MCP server. No Prometheus or in-cluster agent needed. MIT.
+- [KVOvn-topo](https://github.com/coulof/kvovn-topo): read-only OVN topology explorer for Kube-OVN (RKE2, Harvester) and ovn-kubernetes (OpenShift). TUI and MCP server.
+- [RVTools to KVTools mapping](https://SITE.example/rvtools-alternative-kubevirt/): tab-by-tab equivalence for VMware migrations.

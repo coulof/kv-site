@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>An RVTools equivalent for KubeVirt, Harvester and OpenShift Virtualization | KVTools</title>
+<meta name="description" content="KVTools exports a KubeVirt cluster to an RVTools-style Excel workbook. Tab-by-tab mapping, health rules, and use during a VMware migration.">
+<link rel="canonical" href="https://SITE.example/rvtools-alternative-kubevirt/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An RVTools equivalent for KubeVirt">
+<meta property="og:description" content="Tab-by-tab mapping from RVTools to KVTools, for Harvester, OpenShift Virtualization and upstream KubeVirt.">
+<meta property="og:url" content="https://SITE.example/rvtools-alternative-kubevirt/">
+<meta property="og:image" content="https://SITE.example/img/og-rvtools.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../img/kvtools-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"TechArticle","headline":"An RVTools equivalent for KubeVirt","author":{"@type":"Person","name":"Florian Coulombel","url":"https://github.com/coulof"},"about":{"@type":"SoftwareApplication","name":"KVTools","codeRepository":"https://github.com/coulof/kvtools"}},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Is there an RVTools for KubeVirt?","acceptedAnswer":{"@type":"Answer","text":"KVTools is an open-source CLI that exports KubeVirt cluster inventory to an Excel workbook with RVTools-style tabs (kvInfo, kvCPU, kvDisk, kvNetwork and so on), plus a health audit. It works on Harvester, SUSE Virtualization, OpenShift Virtualization and upstream KubeVirt."}},
+      {"@type":"Question","name":"Can I open a KVTools export in tools that read RVTools files?","acceptedAnswer":{"@type":"Answer","text":"No. The sheet names follow RVTools so the mapping is obvious to a person, but the columns describe KubeVirt objects (PVCs, DataVolumes, Multus networks) and are not a drop-in replacement for RVTools columns."}},
+      {"@type":"Question","name":"Does KVTools install anything in the cluster?","acceptedAnswer":{"@type":"Answer","text":"No. It is a single static binary that reads the Kubernetes API with your kubeconfig."}}
+    ]}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../">
+      <img src="../img/kvtools-mark.svg" alt="" width="22" height="22">
+      <img src="../img/kvtop-mark.svg" alt="" width="22" height="22">
+      <img src="../img/kvovn-topo-mark.svg" alt="" width="22" height="22">
+      <span>KV*</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="../#kvtools">KVTools</a>
+      <a href="../#kvtop">KVTop</a>
+      <a href="../#kvovn-topo">KVOvn-topo</a>
+      <a href="https://lafabrique.ai">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero" style="padding-bottom:0">
+    <p class="kicker">KVTools · for VMware admins</p>
+    <h1>An RVTools equivalent for KubeVirt.</h1>
+    <p class="lede">I size most migrations from an RVTools export: one workbook, a tab per concern, a row per VM. Once the VMs run on Harvester or OpenShift Virtualization, there is no RVTools to run. KVTools builds the same kind of workbook from a KubeVirt cluster.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Run it</h3>
+    <div class="cmd"><button class="copy" type="button">copy</button><pre><span class="c"># macOS or Linux, with Homebrew</span>
+<span class="p">$ </span>brew install coulof/tap/kvtools
+<span class="p">$ </span>kvtools</pre></div>
+    <p>No Homebrew? Download the archive for your platform from the <a href="https://github.com/coulof/kvtools/releases">releases page</a>.</p>
+    <p>That writes <code>kvtools_&lt;cluster&gt;_&lt;timestamp&gt;.xlsx</code> in the current directory. It needs read access to the cluster and nothing else.</p>
+  </div>
+
+  <h2 style="margin-top:72px">Tab by tab</h2>
+  <p class="prose">The names line up on purpose. The contents describe KubeVirt objects, so a datastore becomes a StorageClass and VMware Tools becomes the QEMU guest agent.</p>
+  <div class="scroll">
+  <table class="map">
+    <thead><tr><th>RVTools</th><th>KVTools</th><th>What you get</th></tr></thead>
+    <tbody>
+      <tr><td>vInfo</td><td>kvInfo</td><td>Power state, node, guest OS, firmware and boot, TPM, uptime</td></tr>
+      <tr><td>vCPU</td><td>kvCPU</td><td>Sockets, cores, threads, CPU model, dedicated placement, NUMA, requests and limits</td></tr>
+      <tr><td>vMemory</td><td>kvMemory</td><td>Guest RAM, requests, limits, launcher overhead, hugepages</td></tr>
+      <tr><td>vDisk</td><td>kvDisk</td><td>PVCs, DataVolumes, StorageClass, volume mode, bus, CSI driver</td></tr>
+      <tr><td>vPartition</td><td>kvPartition</td><td>Guest filesystems, capacity, free %, from the guest agent</td></tr>
+      <tr><td>vNetwork</td><td>kvNetwork</td><td>Interfaces, Multus networks, binding mode, MACs, IPs</td></tr>
+      <tr><td>vCD</td><td>kvCD</td><td>CD-ROMs, ISOs, container disks</td></tr>
+      <tr><td>vSnapshot</td><td>kvSnapshot</td><td>VM and volume snapshots, readiness, age</td></tr>
+      <tr><td>vTools</td><td>kvGuestAgent</td><td>QEMU guest agent status, version, hostname, kernel</td></tr>
+      <tr><td>vHost</td><td>kvNode</td><td>Physical cores, allocatable, allocated vCPU and RAM, overcommit ratio</td></tr>
+      <tr><td>vDatastore</td><td>kvStoragePool</td><td>StorageClasses, provisioners, reclaim policy, bound PVC totals</td></tr>
+      <tr><td>vHealth</td><td>kvHealth</td><td>16 rules, below</td></tr>
+      <tr><td>—</td><td>kvHardware</td><td>PCI passthrough, GPU and vGPU, SR-IOV NICs</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">The mapping is for people. Tools that parse RVTools exports will not read a KVTools workbook. <!-- TODO: decide if an RVTools-column-compatible export is worth building --></p>
+
+  <h2 style="margin-top:72px">Using both during a migration</h2>
+  <div class="prose">
+    <p>Run RVTools on the source before the cutover and KVTools on the target after. Put <code>vInfo</code> next to <code>kvInfo</code> and you have a VM-by-VM check that everything arrived, with the same CPU and memory shape.</p>
+    <p>Then run <code>kvtools health</code>. Migrated VMs often keep vSphere settings that KubeVirt handles differently:</p>
+    <ul class="facts">
+      <li><b>HLTH-001</b> live migration expected, but the disk is ReadWriteOnce</li>
+      <li><b>HLTH-002</b> <code>host-passthrough</code> CPU model, which limits where the VM can move</li>
+      <li><b>HLTH-007</b> running VM with no guest agent, so no IPs or filesystems reported</li>
+      <li><b>HLTH-015</b> the installer ISO is still attached</li>
+    </ul>
+    <p>For several clusters, <code>kvtools merge a.xlsx b.xlsx -o all.xlsx</code> builds one workbook.</p>
+  </div>
+
+  <h2 style="margin-top:72px">Questions</h2>
+  <div class="prose">
+    <h3>Which platforms?</h3>
+    <p>Anything running KubeVirt: Harvester and SUSE Virtualization, OpenShift Virtualization, upstream. Optional CRDs like CDI, snapshots or Multus are skipped if they are missing.</p>
+    <h3>Air-gapped clusters?</h3>
+    <p>Yes. One static binary, no network calls beyond the Kubernetes API.</p>
+    <h3>What about live performance?</h3>
+    <p>That is <a href="../#kvtop">KVTop</a>, the esxtop side of the family.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Written by <a href="https://github.com/coulof">Florian Coulombel</a> in Lille.</div>
+    <div>RVTools is a trademark of its owner. KVTools is not affiliated with it.</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.nextElementSibling.innerText.split('\n').filter(function(l){return l.indexOf('$ ')===0}).map(function(l){return l.slice(2)}).join('\n');
+    try{navigator.clipboard.writeText(t);b.textContent='copied';setTimeout(function(){b.textContent='copy'},1500)}catch(e){}
+  });
+});
+</script>
+</body>
+</html>

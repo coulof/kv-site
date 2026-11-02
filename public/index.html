@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KVTools, KVTop, KVOvn-topo | Open-source tools for KubeVirt operators</title>
+<meta name="description" content="Open-source CLI tools for VMs on KubeVirt: inventory export to Excel, a btop-style VM monitor, and an OVN topology explorer. Harvester, OpenShift.">
+<!-- TODO: replace SITE.example with the real domain before deploy -->
+<link rel="canonical" href="https://SITE.example/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Open-source tools for KubeVirt operators">
+<meta property="og:description" content="Inventory, live VM metrics and OVN topology for Harvester, OpenShift Virtualization and upstream KubeVirt. Read-only, single binaries, MIT.">
+<meta property="og:url" content="https://SITE.example/">
+<meta property="og:image" content="https://SITE.example/img/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/kvtools-mark.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/suse-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"SoftwareApplication","name":"KVTools","url":"https://SITE.example/#kvtools","codeRepository":"https://github.com/coulof/kvtools","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","license":"https://opensource.org/licenses/MIT","description":"RVTools-style inventory and health audit for KubeVirt clusters. Exports to Excel, JSON, CSV.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"SoftwareApplication","name":"KVTop","url":"https://SITE.example/#kvtop","codeRepository":"https://github.com/coulof/kvtop","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","license":"https://opensource.org/licenses/MIT","softwareVersion":"0.2.0","description":"btop-style terminal monitor and MCP server for virtual machines on KubeVirt and Harvester.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"SoftwareApplication","name":"KVOvn-topo","url":"https://SITE.example/#kvovn-topo","codeRepository":"https://github.com/coulof/kvovn-topo","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","softwareVersion":"0.1.0","description":"Read-only network topology explorer for OVN on Kube-OVN and ovn-kubernetes.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@id":"#author"}},
+    {"@type":"Person","@id":"#author","name":"Florian Coulombel","url":"https://github.com/coulof"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <img src="img/kvtools-mark.svg" alt="" width="22" height="22">
+      <img src="img/kvtop-mark.svg" alt="" width="22" height="22">
+      <img src="img/kvovn-topo-mark.svg" alt="" width="22" height="22">
+      <span>KV*</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#kvtools">KVTools</a>
+      <a href="#kvtop">KVTop</a>
+      <a href="#kvovn-topo">KVOvn-topo</a>
+      <a href="rvtools-alternative-kubevirt/">Coming from RVTools</a>
+      <a href="https://lafabrique.ai">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-grid">
+    <div>
+    <p class="kicker">Harvester · SUSE Virtualization · OpenShift Virtualization · KubeVirt</p>
+    <h1>Day-2 tools for people who run VMs on Kubernetes.</h1>
+    <p class="lede">A week after a VMware exit, someone asks for the RVTools export. On KubeVirt there isn't one, and there's no esxtop or vSphere network view either. I wrote three read-only command-line tools to cover those gaps: inventory, live load per VM, and the OVN network map.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 600 200" preserveAspectRatio="xMinYMid meet">
+        <path d="M49.81,46.19 L89.19,27.21 Q100,22 110.81,27.21 L150.19,46.19 Q161,51.4 163.66,63.10 L173.34,105.70 Q176,117.4 168.52,126.78 L141.28,160.92 Q133.8,170.3 121.8,170.3 L78.2,170.3 Q66.2,170.3 58.72,160.92 L31.48,126.78 Q24,117.4 26.66,105.70 L36.34,63.10 Q39,51.4 49.81,46.19 Z" fill="none" stroke="#2453FF" stroke-width="5" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px"/>
+        <polyline fill="none" stroke="#FE7C3F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px"
+          points="-40,112 0,108 12,104 22,114 32,100 42,107 52,93 62,103 72,96 82,107 92,93 102,100 112,89 122,103 132,96 142,86 150,69 158,93 168,107 178,96 188,110 198,100 210,108 230,98 250,110 270,96 290,104 310,88 322,100 334,72 346,104 360,96 380,108 400,92 420,104 440,100 460,110 480,94 500,104 520,98 540,108 560,90 600,100 700,96"/>
+        <circle cx="150" cy="69" r="6" fill="#FE7C3F" stroke="#fff" stroke-width="2"/>
+      </svg>
+    </div>
+    </div>
+
+    <div class="ask" role="list">
+      <a class="ask-row" href="#kvtools" role="listitem">
+        <span class="q">What VMs do I have, and what will break when I move them?</span>
+        <span class="t">KVTools</span>
+        <span class="a">Inventory to Excel, JSON or CSV, plus 16 health rules for migration blockers and sizing risks.</span>
+      </a>
+      <a class="ask-row" href="#kvtop" role="listitem">
+        <span class="q">Which VM is eating this host right now?</span>
+        <span class="t">KVTop</span>
+        <span class="a">Live CPU, memory, network and IOPS per VM, in the terminal. No Prometheus needed.</span>
+      </a>
+      <a class="ask-row" href="#kvovn-topo" role="listitem">
+        <span class="q">How is this VM's NIC actually wired in OVN?</span>
+        <span class="t">KVOvn-topo</span>
+        <span class="a">VPCs, routers, switches, ports and chassis, joined from the NB and SB databases into one tree.</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- KVTOOLS -->
+  <section class="tool" id="kvtools" aria-labelledby="h-kvtools">
+    <div class="tool-head"><img src="img/kvtools-mark.svg" alt="" width="36" height="36"><h2 id="h-kvtools">KVTools</h2></div>
+    <p class="tag">Inventory and health audit · <a href="https://github.com/coulof/kvtools">coulof/kvtools</a> · MIT</p>
+
+    <div class="cols">
+      <div class="prose">
+        <p>If you have ever sized a migration from an RVTools export, you know the format. KVTools produces the same kind of workbook for a KubeVirt cluster: one tab per concern, one row per VM, disk or NIC. The tabs are named after their RVTools counterparts, so <code>vInfo</code> becomes <code>kvInfo</code>.</p>
+        <p>It also runs a health audit. The rules are the things that hurt during a VMware exit: an RWO volume on a VM that should live-migrate, a <code>HostDisk</code> pinning a VM to one node, a guest agent that never connected, snapshots nobody cleaned up.</p>
+        <div class="cmd"><button class="copy" type="button">copy</button><pre><span class="p">$ </span>brew install coulof/tap/kvtools
+<span class="c"># whole cluster to Excel</span>
+<span class="p">$ </span>kvtools
+<span class="c"># just the audit, in the terminal</span>
+<span class="p">$ </span>kvtools health
+<span class="c"># merge exports from several clusters</span>
+<span class="p">$ </span>kvtools merge c1.xlsx c2.xlsx -o all.xlsx</pre></div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">13 sheets</h3>
+        <ul class="sheets">
+          <li>kvInfo</li><li>kvCPU</li><li>kvMemory</li><li>kvDisk</li><li>kvPartition</li><li>kvNetwork</li><li>kvCD</li>
+          <li>kvSnapshot</li><li>kvGuestAgent</li><li>kvNode</li><li>kvStoragePool</li><li>kvHardware</li><li>kvHealth</li>
+        </ul>
+        <h3>A few of the health rules</h3>
+        <ul class="facts">
+          <li><b>HLTH-001</b> live migration configured on an RWO PVC</li>
+          <li><b>HLTH-005</b> zombie PVC whose owner VM no longer exists</li>
+          <li><b>HLTH-008</b> VM snapshots older than 14 days</li>
+          <li><b>HLTH-011</b> node vCPU overcommit above 8:1</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure>
+      <img src="img/kvtools-excel.webp" width="1600" height="384" loading="lazy" alt="KVTools Excel export open on the kvNode sheet, one row per physical host">
+      <figcaption>The <code>kvNode</code> sheet: physical cores, allocatable resources, allocated vCPU and RAM, and the overcommit ratio per host.</figcaption>
+    </figure>
+    <p><a href="rvtools-alternative-kubevirt/">Tab-by-tab mapping from RVTools to KVTools →</a></p>
+  </section>
+
+  <!-- KVTOP -->
+  <section class="tool" id="kvtop" aria-labelledby="h-kvtop">
+    <div class="tool-head"><img src="img/kvtop-mark.svg" alt="" width="36" height="36"><h2 id="h-kvtop">KVTop</h2></div>
+    <p class="tag">Live VM monitor and MCP server · <a href="https://github.com/coulof/kvtop">coulof/kvtop</a> · v0.2.0 · MIT</p>
+
+    <figure style="margin-top:0">
+      <img src="img/kvtop-dashboard.webp" width="1600" height="691" loading="lazy" alt="KVTop terminal dashboard with braille charts for VM CPU, memory and network, a node table and a VM table">
+    </figure>
+
+    <div class="cols">
+      <div class="prose">
+        <p>Harvester ships with monitoring turned off, so a busy host often has no dashboard to check. KVTop scrapes <code>virt-handler</code> on every node through the API server proxy, using only your kubeconfig. Nothing gets installed in the cluster.</p>
+        <p>Select a VM and it streams <code>virsh domstats</code>: per-vCPU wait time, per-NIC throughput, per-disk IOPS. Live migrations show up as they happen.</p>
+        <p>The same core outputs JSON (<code>kvtop top</code>, <code>vm</code>, <code>nodes</code>, <code>diagnose</code>) and runs as an MCP server, so you can ask your coding agent which VM is the noisy neighbour.</p>
+      </div>
+      <div>
+        <div class="cmd"><button class="copy" type="button">copy</button><pre><span class="p">$ </span>brew install coulof/tap/kvtop
+<span class="p">$ </span>kvtop
+<span class="p">$ </span>kvtop --sort mem --namespace prod
+<span class="c"># OpenShift / upstream</span>
+<span class="p">$ </span>kvtop --virt-handler-namespace openshift-cnv
+<span class="c"># for agents</span>
+<span class="p">$ </span>kvtop diagnose -o json -q
+<span class="p">$ </span>claude mcp add kvtop -- kvtop mcp</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KVOVN-TOPO -->
+  <section class="tool" id="kvovn-topo" aria-labelledby="h-kvovn">
+    <div class="tool-head"><img src="img/kvovn-topo-mark.svg" alt="" width="36" height="36"><h2 id="h-kvovn">KVOvn-topo</h2></div>
+    <p class="tag">OVN topology explorer · <a href="https://github.com/coulof/kvovn-topo">coulof/kvovn-topo</a> · v0.1.0 pre-release</p>
+
+    <div class="cols">
+      <div class="prose">
+        <p><code>kubectl ko nbctl show</code> gives you every row and no picture. KVOvn-topo reads the Northbound and Southbound databases, joins them, and shows the result as a k9s-style tree: VPC, router, switch, port, and the pod or VM behind it. Press <kbd>Enter</kbd> on a relation to follow it.</p>
+        <p>With <code>--diag</code> it runs <code>ovn-trace</code>, tcpdump or conntrack for the selected object, on the node that hosts it. Without it, nothing is executed anywhere.</p>
+        <p>It supports Kube-OVN on RKE2 and Harvester. On OpenShift it reads ovn-kubernetes one node at a time. If you want the long version, read <a href="https://lafabrique.ai">Following a Packet Through OVN</a>.</p>
+      </div>
+      <div>
+        <ul class="facts">
+          <li><b>Read-only</b>, enforced by a lint in CI</li>
+          <li><b>No exposed endpoint</b>: reached through the API server service proxy</li>
+          <li><b>Push updates</b>: OVSDB monitors in, SSE out</li>
+          <li><b>Air-gap</b>: static binaries, distroless image, Hauler manifest</li>
+        </ul>
+        <div class="cmd"><button class="copy" type="button">copy</button><pre><span class="p">$ </span>helm install kvovn-topo \
+    oci://ghcr.io/coulof/charts/kvovn-topo \
+    -n kube-system
+<span class="p">$ </span>brew install coulof/tap/kvovn-topo
+<span class="p">$ </span>kvovn-topo</pre></div>
+      </div>
+    </div>
+    <figure>
+      <img src="img/kvovn-topo-home.webp" width="1600" height="809" loading="lazy" alt="KVOvn-topo terminal UI with the VPC tree on the left and the details pane on the right">
+    </figure>
+  </section>
+
+</div>
+
+<!-- COMMON GROUND -->
+<div class="band">
+  <svg class="hept" viewBox="20 18 162 160" aria-hidden="true"><path d="M49.81,46.19 L89.19,27.21 Q100,22 110.81,27.21 L150.19,46.19 Q161,51.4 163.66,63.10 L173.34,105.70 Q176,117.4 168.52,126.78 L141.28,160.92 Q133.8,170.3 121.8,170.3 L78.2,170.3 Q66.2,170.3 58.72,160.92 L31.48,126.78 Q24,117.4 26.66,105.70 L36.34,63.10 Q39,51.4 49.81,46.19 Z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/></svg>
+  <div class="wrap">
+    <h2>What they have in common</h2>
+    <div class="principles">
+      <div><b>Read-only</b><p>None of them change your cluster. KVOvn-topo's exec-based diagnostics are opt-in behind a flag.</p></div>
+      <div><b>One binary, your kubeconfig</b><p>KVTools and KVTop install nothing in the cluster. KVOvn-topo runs one small daemon.</p></div>
+      <div><b>Try it without a cluster</b><p>From a clone of the repo, <code>kvtop --replay testdata/</code> and <code>kvovn-topo --fixture</code> run on recorded data.</p></div>
+      <div><b>Air-gapped sites</b><p>Static binaries, no call-home. Built for networks where nothing reaches the internet.</p></div>
+      <div><b>Usable by agents</b><p>KVTop and KVOvn-topo ship MCP servers and stable JSON output.</p></div>
+      <div><b>Any KubeVirt</b><p>Tested mostly on Harvester, so bug reports from OpenShift Virtualization help the most.</p></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Written by <a href="https://github.com/coulof">Florian Coulombel</a> in Lille. <!-- CONFIRM: personal projects, not a SUSE product? --></div>
+    <div>RVTools is a trademark of its owner. These projects are not affiliated with it.</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.nextElementSibling.innerText.split('\n').filter(function(l){return l.indexOf('$ ')===0||/^\s+\S/.test(l)}).map(function(l){return l.replace(/^\$ /,'')}).join('\n');
+    try{navigator.clipboard.writeText(t);b.textContent='copied';setTimeout(function(){b.textContent='copy'},1500)}catch(e){}
+  });
+});
+</script>
+</body>
+</html>
