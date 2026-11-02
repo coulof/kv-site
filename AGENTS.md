@@ -33,7 +33,7 @@ If a fact is missing, leave a visible `[TODO: ...]` in an HTML comment and say s
 
 - KVTools: github.com/coulof/kvtools (v0.1.0, MIT). 13 sheets, 16 `HLTH-*` rules.
 - KVTop: github.com/coulof/kvtop (v0.2.0, MIT). TUI, JSON CLI (`schema: kvtop/v1`), MCP server.
-- KVOvn-topo: github.com/coulof/kvovn-topo (v0.1.0 pre-release, **no LICENSE file yet**).
+- KVOvn-topo: github.com/coulof/kvovn-topo (v0.1.0 release, **no LICENSE file yet**).
 - Install via Homebrew: `brew install coulof/tap/<kvtools|kvtop|kvovn-topo>` (formulae in
   github.com/coulof/homebrew-tap). KVOvn-topo: macOS arm64 and Linux amd64 only.
 
