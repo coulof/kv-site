@@ -1,6 +1,8 @@
 {
   "name": "kv-tools-site",
   "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "kvtools.lafabrique.ai", "custom_domain": true }],
   "assets": {
     "directory": "./public",
     "html_handling": "auto-trailing-slash",

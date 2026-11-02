@@ -97,11 +97,15 @@ Pages target one search intent each. Planned, in order:
    Through OVN" post.
 3. `/kubevirt-mcp-server/`: KVTop + KVOvn-topo MCP tools, prompts from `docs/mcp-prompts.md`.
 
-## Before the first deploy
+## Deploys
 
-- Replace every `SITE.example` (HTML, robots.txt, sitemap.xml, llms.txt) with the real domain.
-- Blog links point at https://lafabrique.ai/blog/. Point "Following a Packet Through OVN" at the post URL itself.
-- Resolve the footer `CONFIRM` comment (personal projects vs SUSE).
+Live at https://kvtools.lafabrique.ai (Worker `kv-tools-site`, custom domain in `wrangler.jsonc`).
+Pushes to `main` deploy through Cloudflare Workers Builds (deploy command `npx wrangler deploy`).
+CI does not run the Playwright check, so run `mise run check` before pushing. `mise run deploy`
+is the manual fallback. These are personal projects, not SUSE products.
+
+Open items:
+- Point "Following a Packet Through OVN" at the post URL itself (blog links go to https://lafabrique.ai/blog/).
 - Push the homebrew-tap branch, or the `brew install` lines on the site are wrong.
 - Add a LICENSE to kvovn-topo.
 
